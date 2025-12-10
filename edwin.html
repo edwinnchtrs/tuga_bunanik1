@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DxD Squad MLBB | Platform Esports Mobile Legends</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=Oxanium:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mlbb-red: #e63946;
+            --mlbb-dark: #1a1a2e;
+            --mlbb-blue: #1d4e89;
+            --mlbb-gold: #ffd700;
+            --mlbb-purple: #7209b7;
+            --mlbb-cyan: #00bbf9;
+            --mlbb-bg: #0d1117;
+            --mlbb-card: #161b22;
+            --mlbb-border: #30363d;
+            --text-primary: #ffffff;
+            --text-secondary: #c9d1d9;
+            --text-muted: #8b949e;
+            --success: #238636;
+            --danger: #da3633;
+            --warning: #d29922;
+            --info: #58a6ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: var(--mlbb-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(230, 57, 70, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(29, 78, 137, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        /* Battle Animation */
+        .battle-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+        }
+        
+        .skill-effect {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--mlbb-cyan) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(10px);
+            animation: skillAnimation 3s infinite;
+        }
+        
+        @keyframes skillAnimation {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 0.5; }
+            50% { transform: translate(100px, 100px) scale(1); opacity: 0.8; }
+            100% { transform: translate(0, 0) scale(0.5); opacity: 0.5; }
+        }
+        
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(22, 27, 34, 0.95);
+            border-radius: 20px;
+            border: 2px solid var(--mlbb-border);
+            padding: 40px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--mlbb-red), var(--mlbb-gold), var(--mlbb-cyan));
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-gold));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transform: rotate(15deg);
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(13, 17, 23, 0.8);
+            border: 2px solid var(--mlbb-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--mlbb-red);
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 45px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--mlbb-red);
+        }
+        
+        .forgot-password {
+            color: var(--mlbb-cyan);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .login-button {
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-blue));
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(230, 57, 70, 0.4);
+        }
+        
+        .register-link {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-top: 25px;
+        }
+        
+        .register-link a {
+            color: var(--mlbb-cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Main App */
+        .app-container {
+            display: none;
+            min-height: 100vh;
+        }
+        
+        /* Top Navigation */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--mlbb-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+        
+        .nav-logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-gold));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .nav-logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-search {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 50px;
+            background: rgba(13, 17, 23, 0.8);
+            border: 2px solid var(--mlbb-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-notification {
+            position: relative;
+            width: 45px;
+            height: 45px;
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-notification:hover {
+            background: rgba(230, 57, 70, 0.2);
+            color: var(--mlbb-red);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: var(--mlbb-red);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 15px;
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-profile:hover {
+            background: rgba(230, 57, 70, 0.2);
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .user-rank {
+            font-size: 14px;
+            color: var(--mlbb-gold);
+            font-weight: 500;
+        }
+        
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            padding: 30px;
+            gap: 30px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* Left Sidebar - Menu */
+        .sidebar-left {
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .menu-section {
+            background: var(--mlbb-card);
+            border-radius: 15px;
+            border: 2px solid var(--mlbb-border);
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--mlbb-cyan);
+        }
+        
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-secondary);
+        }
+        
+        .menu-item:hover {
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .menu-item.active {
+            background: rgba(230, 57, 70, 0.2);
+            color: var(--mlbb-red);
+            border-left: 4px solid var(--mlbb-red);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        /* Dashboard Header */
+        .dashboard-header {
+            background: var(--mlbb-card);
+            border-radius: 15px;
+            border: 2px solid var(--mlbb-border);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--mlbb-red), var(--mlbb-gold));
+        }
+        
+        .squad-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .squad-name {
+            font-size: 32px;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .squad-tag {
+            font-size: 20px;
+            color: var(--mlbb-cyan);
+            font-weight: 600;
+        }
+        
+        .squad-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--mlbb-border);
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--mlbb-gold);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Content Cards */
+        .content-card {
+            background: var(--mlbb-card);
+            border-radius: 15px;
+            border: 2px solid var(--mlbb-border);
+            padding: 25px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-action {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-blue));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .card-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+        }
+        
+        /* Squad Members Grid */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .member-card {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--mlbb-border);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--mlbb-red);
+            box-shadow: 0 10px 25px rgba(230, 57, 70, 0.2);
+        }
+        
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .member-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .member-info {
+            flex: 1;
+        }
+        
+        .member-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .member-role {
+            font-size: 14px;
+            color: var(--mlbb-cyan);
+            font-weight: 600;
+        }
+        
+        .member-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .member-stat {
+            text-align: center;
+        }
+        
+        .member-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--mlbb-gold);
+        }
+        
+        .member-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* Match History */
+        .matches-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .match-card {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .match-card.win {
+            border-left-color: var(--success);
+        }
+        
+        .match-card.loss {
+            border-left-color: var(--danger);
+        }
+        
+        .match-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .match-result {
+            width: 80px;
+            text-align: center;
+        }
+        
+        .result-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .win .result-badge {
+            background: rgba(35, 134, 54, 0.2);
+            color: var(--success);
+        }
+        
+        .loss .result-badge {
+            background: rgba(218, 54, 51, 0.2);
+            color: var(--danger);
+        }
+        
+        .match-details {
+            flex: 1;
+        }
+        
+        .match-mode {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .match-heroes {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .match-score {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--mlbb-gold);
+        }
+        
+        /* Training Schedule */
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .schedule-card {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid var(--mlbb-cyan);
+        }
+        
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .schedule-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .schedule-time {
+            font-size: 16px;
+            color: var(--mlbb-gold);
+            font-weight: 600;
+        }
+        
+        .schedule-desc {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .schedule-participants {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .participant {
+            padding: 5px 15px;
+            background: rgba(230, 57, 70, 0.1);
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            display: none;
+            flex-direction: column;
+            height: 600px;
+        }
+        
+        .chat-header {
+            padding: 20px;
+            background: var(--mlbb-card);
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            border: 2px solid var(--mlbb-border);
+            border-bottom: none;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            background: rgba(13, 17, 23, 0.8);
+            overflow-y: auto;
+            border-left: 2px solid var(--mlbb-border);
+            border-right: 2px solid var(--mlbb-border);
+        }
+        
+        .message {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .message-content {
+            flex: 1;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .message-sender {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .message-text {
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        
+        .chat-input {
+            padding: 20px;
+            background: var(--mlbb-card);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            border: 2px solid var(--mlbb-border);
+            border-top: none;
+        }
+        
+        .input-box {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 15px 20px;
+            background: rgba(13, 17, 23, 0.8);
+            border: 2px solid var(--mlbb-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .send-button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-blue));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Hero Pool */
+        .hero-pool {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .hero-card {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--mlbb-border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .hero-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--mlbb-red);
+        }
+        
+        .hero-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--mlbb-red), var(--mlbb-blue));
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .hero-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .hero-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* Right Sidebar */
+        .sidebar-right {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Upcoming Tournaments */
+        .tournament-card {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--mlbb-border);
+            margin-bottom: 15px;
+        }
+        
+        .tournament-prize {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--mlbb-gold);
+            margin-bottom: 10px;
+        }
+        
+        .tournament-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .tournament-date {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        /* Strategy Notes */
+        .strategy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .strategy-item {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid var(--mlbb-cyan);
+        }
+        
+        .strategy-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .strategy-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .modal {
+            background: var(--mlbb-card);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid var(--mlbb-border);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--mlbb-cyan);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Stats Charts */
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .stat-chart {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--mlbb-border);
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .chart-bar {
+            height: 20px;
+            background: rgba(48, 54, 61, 0.5);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .chart-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--mlbb-red), var(--mlbb-gold));
+            border-radius: 10px;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(13, 17, 23, 0.8);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--mlbb-red);
+            border-radius: 4px;
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease;
+        }
+        
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .grid {
+            display: grid;
+        }
+        
+        .ml-2 {
+            margin-left: 8px;
+        }
+        
+        .mt-4 {
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container slide-in">
+            <div class="login-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <div class="logo-text">DxD MLBB</div>
+                </div>
+                <p class="login-subtitle">Platform esports Mobile Legends untuk squad DxD. Manage tim, strategi, jadwal, dan komunikasi dalam satu tempat.</p>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="input-group">
+                    <label class="input-label" for="username">ID Game atau Username</label>
+                    <input type="text" id="username" class="input-field" placeholder="Masukkan ID Game MLBB" required>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label" for="password">Password</label>
+                    <input type="password" id="password" class="input-field" placeholder="Masukkan password" required>
+                    <button type="button" class="password-toggle" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                
+                <div class="login-options">
+                    <label class="remember-me">
+                        <input type="checkbox" class="checkbox" id="rememberMe">
+                        <span>Ingat saya</span>
+                    </label>
+                    <a href="#" class="forgot-password" id="forgotPassword">Lupa password?</a>
+                </div>
+                
+                <button type="submit" class="login-button" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i> Login ke Squad
+                </button>
+            </form>
+            
+            <p class="register-link">
+                Belum anggota squad? <a href="#" id="registerLink">Daftar untuk bergabung</a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Main App -->
+    <div class="app-container" id="mainApp">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <div class="nav-logo">
+                    <div class="nav-logo-icon">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <div class="nav-logo-text">DxD MLBB</div>
+                </div>
+                
+                <div class="nav-search">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Cari member, strategi, atau hero...">
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <div class="nav-notification" id="notificationButton">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge">3</div>
+                </div>
+                
+                <div class="user-profile" id="userProfile">
+                    <div class="user-avatar">
+                        D
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">DragonX</div>
+                        <div class="user-rank">Mythical Glory • Captain</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Left Sidebar -->
+            <div class="sidebar-left">
+                <div class="menu-section">
+                    <div class="section-title">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item active" data-page="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard Utama</span>
+                        </div>
+                        <div class="menu-item" data-page="members">
+                            <i class="fas fa-users"></i>
+                            <span>Anggota Squad</span>
+                        </div>
+                        <div class="menu-item" data-page="matches">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Match History</span>
+                        </div>
+                        <div class="menu-item" data-page="schedule">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Jadwal Latihan</span>
+                        </div>
+                        <div class="menu-item" data-page="heroes">
+                            <i class="fas fa-user-ninja"></i>
+                            <span>Hero Pool</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="section-title">
+                        <i class="fas fa-comments"></i>
+                        Komunikasi
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item" data-page="chat">
+                            <i class="fas fa-comment-dots"></i>
+                            <span>Squad Chat</span>
+                        </div>
+                        <div class="menu-item" data-page="strategy">
+                            <i class="fas fa-chess"></i>
+                            <span>Strategi & Draft</span>
+                        </div>
+                        <div class="menu-item" data-page="voice">
+                            <i class="fas fa-headphones"></i>
+                            <span>Voice Channel</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="section-title">
+                        <i class="fas fa-trophy"></i>
+                        Kompetisi
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item" data-page="tournaments">
+                            <i class="fas fa-trophy"></i>
+                            <span>Tournament</span>
+                        </div>
+                        <div class="menu-item" data-page="scrim">
+                            <i class="fas fa-fist-raised"></i>
+                            <span>Scrim Schedule</span>
+                        </div>
+                        <div class="menu-item" data-page="stats">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Statistik</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Dashboard Header -->
+                <div class="dashboard-header slide-in">
+                    <div class="squad-info">
+                        <div>
+                            <h1 class="squad-name">DxD Squad</h1>
+                            <p class="squad-tag">Team ID: DxD • Region: Indonesia</p>
+                        </div>
+                        <div>
+                            <button class="card-action" id="startScrimButton">
+                                <i class="fas fa-play"></i> Start Scrim
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="squad-stats">
+                        <div class="stat-card">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Anggota</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">72%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">247</div>
+                            <div class="stat-label">Matches</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">Mythic</div>
+                            <div class="stat-label">Avg Rank</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Squad Members -->
+                <div class="content-card" id="membersPage">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-users"></i>
+                            Anggota Squad
+                        </h2>
+                        <button class="card-action" id="inviteMemberButton">
+                            <i class="fas fa-user-plus"></i> Invite Member
+                        </button>
+                    </div>
+                    
+                    <div class="members-grid">
+                        <!-- Member 1 -->
+                        <div class="member-card">
+                            <div class="member-header">
+                                <div class="member-avatar">D</div>
+                                <div class="member-info">
+                                    <div class="member-name">DragonX</div>
+                                    <div class="member-role">Captain • Jungler</div>
+                                </div>
+                            </div>
+                            <div class="member-stats">
+                                <div class="member-stat">
+                                    <div class="member-stat-value">78%</div>
+                                    <div class="member-stat-label">Win Rate</div>
+                                </div>
+                                <div class="member-stat">
+                                    <div class="member-stat-value">MG</div>
+                                    <div class="member-stat-label">Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Member 2 -->
+                        <div class="member-card">
+                            <div class="member-header">
+                                <div class="member-avatar">S</div>
+                                <div class="member-info">
+                                    <div class="member-name">Shadow</div>
+                                    <div class="member-role">Mid Laner</div>
+                                </div>
+                            </div>
+                            <div class="member-stats">
+                                <div class="member-stat">
+                                    <div class="member-stat-value">82%</div>
+                                    <div class="member-stat-label">Win Rate</div>
+                                </div>
+                                <div class="member-stat">
+                                    <div class="member-stat-value">MG</div>
+                                    <div class="member-stat-label">Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Member 3 -->
+                        <div class="member-card">
+                            <div class="member-header">
+                                <div class="member-avatar">B</div>
+                                <div class="member-info">
+                                    <div class="member-name">Blaze</div>
+                                    <div class="member-role">EXP Laner</div>
+                                </div>
+                            </div>
+                            <div class="member-stats">
+                                <div class="member-stat">
+                                    <div class="member-stat-value">75%</div>
+                                    <div class="member-stat-label">Win Rate</div>
+                                </div>
+                                <div class="member-stat">
+                                    <div class="member-stat-value">MG</div>
+                                    <div class="member-stat-label">Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Member 4 -->
+                        <div class="member-card">
+                            <div class="member-header">
+                                <div class="member-avatar">F</div>
+                                <div class="member-info">
+                                    <div class="member-name">Frost</div>
+                                    <div class="member-role">Gold Laner</div>
+                                </div>
+                            </div>
+                            <div class="member-stats">
+                                <div class="member-stat">
+                                    <div class="member-stat-value">80%</div>
+                                    <div class="member-stat-label">Win Rate</div>
+                                </div>
+                                <div class="member-stat">
+                                    <div class="member-stat-value">MG</div>
+                                    <div class="member-stat-label">Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Match History -->
+                <div class="content-card hidden" id="matchesPage">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-gamepad"></i>
+                            Match History Terbaru
+                        </h2>
+                        <button class="card-action" id="viewAllMatches">
+                            <i class="fas fa-list"></i> Lihat Semua
+                        </button>
+                    </div>
+                    
+                    <div class="matches-list">
+                        <!-- Match 1 -->
+                        <div class="match-card win">
+                            <div class="match-info">
+                                <div class="match-result">
+                                    <div class="result-badge">WIN</div>
+                                </div>
+                                <div class="match-details">
+                                    <div class="match-mode">Ranked • Mythic</div>
+                                    <div class="match-heroes">Ling, Kagura, Uranus, Claude, Mathilda</div>
+                                </div>
+                            </div>
+                            <div class="match-score">25 - 12</div>
+                        </div>
+                        
+                        <!-- Match 2 -->
+                        <div class="match-card win">
+                            <div class="match-info">
+                                <div class="match-result">
+                                    <div class="result-badge">WIN</div>
+                                </div>
+                                <div class="match-details">
+                                    <div class="match-mode">Scrim • Tournament</div>
+                                    <div class="match-heroes">Hayabusa, Yve, Khaleed, Brody, Rafaela</div>
+                                </div>
+                            </div>
+                            <div class="match-score">18 - 7</div>
+                        </div>
+                        
+                        <!-- Match 3 -->
+                        <div class="match-card loss">
+                            <div class="match-info">
+                                <div class="match-result">
+                                    <div class="result-badge">LOSS</div>
+                                </div>
+                                <div class="match-details">
+                                    <div class="match-mode">Ranked • Mythic</div>
+                                    <div class="match-heroes">Gusion, Lylia, Thamuz, Melissa, Diggie</div>
+                                </div>
+                            </div>
+                            <div class="match-score">15 - 22</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Training Schedule -->
+                <div class="content-card hidden" id="schedulePage">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Jadwal Latihan
+                        </h2>
+                        <button class="card-action" id="addSchedule">
+                            <i class="fas fa-plus"></i> Tambah Jadwal
+                        </button>
+                    </div>
+                    
+                    <div class="schedule-list">
+                        <!-- Schedule 1 -->
+                        <div class="schedule-card">
+                            <div class="schedule-header">
+                                <div class="schedule-title">Strategy Practice - Draft Phase</div>
+                                <div class="schedule-time">Hari ini • 20:00 WIB</div>
+                            </div>
+                            <div class="schedule-desc">
+                                Fokus pada draft strategy dan hero pool optimization. Wajib hadir semua anggota main roster.
+                            </div>
+                            <div class="schedule-participants">
+                                <span class="participant">DragonX</span>
+                                <span class="participant">Shadow</span>
+                                <span class="participant">Blaze</span>
+                                <span class="participant">Frost</span>
+                                <span class="participant">Ace</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Schedule 2 -->
+                        <div class="schedule-card">
+                            <div class="schedule-header">
+                                <div class="schedule-title">Scrim vs Team Alpha</div>
+                                <div class="schedule-time">Besok • 21:00 WIB</div>
+                            </div>
+                            <div class="schedule-desc">
+                                Best of 3 scrim match. Fokus pada early game rotation dan objective control.
+                            </div>
+                            <div class="schedule-participants">
+                                <span class="participant">DragonX</span>
+                                <span class="participant">Shadow</span>
+                                <span class="participant">Blaze</span>
+                                <span class="participant">Frost</span>
+                                <span class="participant">Ace</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hero Pool -->
+                <div class="content-card hidden" id="heroesPage">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-user-ninja"></i>
+                            Hero Pool Squad
+                        </h2>
+                        <button class="card-action" id="addHero">
+                            <i class="fas fa-plus"></i> Tambah Hero
+                        </button>
+                    </div>
+                    
+                    <div class="hero-pool">
+                        <!-- Hero 1 -->
+                        <div class="hero-card">
+                            <div class="hero-icon">L</div>
+                            <div class="hero-name">Ling</div>
+                            <div class="hero-role">Jungler • Assassin</div>
+                        </div>
+                        
+                        <!-- Hero 2 -->
+                        <div class="hero-card">
+                            <div class="hero-icon">G</div>
+                            <div class="hero-name">Gusion</div>
+                            <div class="hero-role">Jungler • Assassin</div>
+                        </div>
+                        
+                        <!-- Hero 3 -->
+                        <div class="hero-card">
+                            <div class="hero-icon">H</div>
+                            <div class="hero-name">Hayabusa</div>
+                            <div class="hero-role">Jungler • Assassin</div>
+                        </div>
+                        
+                        <!-- Hero 4 -->
+                        <div class="hero-card">
+                            <div class="hero-icon">K</div>
+                            <div class="hero-name">Kagura</div>
+                            <div class="hero-role">Mid • Mage</div>
+                        </div>
+                        
+                        <!-- Hero 5 -->
+                        <div class="hero-card">
+                            <div class="hero-icon">Y</div>
+                            <div class="hero-name">Yve</div>
+                            <div class="hero-role">Mid • Mage</div>
+                        </div>
+                        
+                        <!-- Hero 6 -->
+                        <div class="hero-card">
+                            <div class="hero-icon">B</div>
+                            <div class="hero-name">Brody</div>
+                            <div class="hero-role">Gold • Marksman</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Container -->
+                <div class="chat-container hidden" id="chatPage">
+                    <div class="chat-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-comment-dots"></i>
+                            Squad Chat
+                        </h2>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages will be loaded here -->
+                    </div>
+                    
+                    <div class="chat-input">
+                        <div class="input-box">
+                            <input type="text" class="message-input" id="messageInput" placeholder="Ketik pesan untuk squad...">
+                            <button class="send-button" id="sendMessage">
+                                <i class="fas fa-paper-plane"></i> Kirim
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Statistics Page -->
+                <div class="content-card hidden" id="statsPage">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-chart-bar"></i>
+                            Statistik Squad
+                        </h2>
+                    </div>
+                    
+                    <div class="stats-container">
+                        <div class="stat-chart">
+                            <div class="chart-title">Win Rate per Role</div>
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: 78%;"></div>
+                            </div>
+                            <div>Jungler: 78%</div>
+                            
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: 82%;"></div>
+                            </div>
+                            <div>Mid Laner: 82%</div>
+                            
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: 75%;"></div>
+                            </div>
+                            <div>EXP Laner: 75%</div>
+                            
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: 80%;"></div>
+                            </div>
+                            <div>Gold Laner: 80%</div>
+                        </div>
+                        
+                        <div class="stat-chart">
+                            <div class="chart-title">Most Played Heroes</div>
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: 85%;"></div>
+                            </div>
+                            <div>Ling: 85 games</div>
+                            
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: 70%;"></div>
+                            </div>
+                            <div>Kagura: 70 games</div>
+                            
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: 65%;"></div>
+                            </div>
+                            <div>Uranus: 65 games</div>
+                            
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: 60%;"></div>
+                            </div>
+                            <div>Claude: 60 games</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar -->
+            <div class="sidebar-right">
+                <div class="menu-section">
+                    <div class="section-title">
+                        <i class="fas fa-trophy"></i>
+                        Tournament Mendatang
+                    </div>
+                    <div class="tournament-card">
+                        <div class="tournament-prize">Rp 10.000.000</div>
+                        <div class="tournament-name">MLBB National Championship</div>
+                        <div class="tournament-date">Pendaftaran: 15-30 Juni 2024</div>
+                    </div>
+                    
+                    <div class="tournament-card">
+                        <div class="tournament-prize">Rp 5.000.000</div>
+                        <div class="tournament-name">Mythic Cup Season 3</div>
+                        <div class="tournament-date">Pendaftaran: 1-10 Juli 2024</div>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="section-title">
+                        <i class="fas fa-chess"></i>
+                        Strategy Notes
+                    </div>
+                    <div class="strategy-list">
+                        <div class="strategy-item">
+                            <div class="strategy-title">Draft Priority</div>
+                            <div class="strategy-desc">Ban: Mathilda, Diggie, Faramis | Pick: Ling, Kagura</div>
+                        </div>
+                        
+                        <div class="strategy-item">
+                            <div class="strategy-title">Early Game Rotate</div>
+                            <div class="strategy-desc">Jungler start blue -> turtle lane -> invade red</div>
+                        </div>
+                        
+                        <div class="strategy-item">
+                            <div class="strategy-title">Late Game Focus</div>
+                            <div class="strategy-desc">Protect gold laner, control lord area, avoid solo farm</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="section-title">
+                        <i class="fas fa-bell"></i>
+                        Notifikasi
+                    </div>
+                    <div class="strategy-list">
+                        <div class="strategy-item">
+                            <div class="strategy-title">Scrim Request</div>
+                            <div class="strategy-desc">Team Bravo ingin scrim besok jam 21:00</div>
+                        </div>
+                        
+                        <div class="strategy-item">
+                            <div class="strategy-title">Tournament Reminder</div>
+                            <div class="strategy-desc">Pendaftaran MLBB NC ditutup 30 Juni</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Invite Member Modal -->
+    <div class="modal-overlay" id="inviteModal">
+        <div class="modal slide-in">
+            <div class="modal-header">
+                <div class="modal-title">Invite Member Baru</div>
+                <button class="close-modal" id="closeInviteModal">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="input-group">
+                    <label class="input-label" for="inviteId">ID Game MLBB</label>
+                    <input type="text" id="inviteId" class="input-field" placeholder="Masukkan ID Game (contoh: 123456789)">
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label" for="inviteRole">Role di Squad</label>
+                    <select id="inviteRole" class="input-field">
+                        <option value="jungler">Jungler</option>
+                        <option value="mid">Mid Laner</option>
+                        <option value="exp">EXP Laner</option>
+                        <option value="gold">Gold Laner</option>
+                        <option value="roam">Roamer</option>
+                        <option value="sub">Substitute</option>
+                    </select>
+                </div>
+                
+                <button class="login-button" id="sendInvite">
+                    <i class="fas fa-paper-plane"></i> Kirim Undangan
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Start Scrim Modal -->
+    <div class="modal-overlay" id="scrimModal">
+        <div class="modal slide-in">
+            <div class="modal-header">
+                <div class="modal-title">Start Scrim Match</div>
+                <button class="close-modal" id="closeScrimModal">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="input-group">
+                    <label class="input-label" for="scrimType">Tipe Scrim</label>
+                    <select id="scrimType" class="input-field">
+                        <option value="bo1">Best of 1</option>
+                        <option value="bo3">Best of 3</option>
+                        <option value="bo5">Best of 5</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label" for="opponentTeam">Opponent Team</label>
+                    <input type="text" id="opponentTeam" class="input-field" placeholder="Nama team lawan">
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label" for="scrimTime">Waktu Mulai</label>
+                    <input type="datetime-local" id="scrimTime" class="input-field">
+                </div>
+                
+                <button class="login-button" id="startScrim">
+                    <i class="fas fa-play"></i> Start Scrim
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Squad DxD Mobile Legends
+        const squadMembers = [
+            {
+                id: 1,
+                name: "DragonX",
+                role: "Captain • Jungler",
+                winRate: 78,
+                rank: "Mythical Glory",
+                avatar: "D",
+                mainHeroes: ["Ling", "Gusion", "Hayabusa"],
+                joinDate: "2023-01-15"
+            },
+            {
+                id: 2,
+                name: "Shadow",
+                role: "Mid Laner",
+                winRate: 82,
+                rank: "Mythical Glory",
+                avatar: "S",
+                mainHeroes: ["Kagura", "Yve", "Lylia"],
+                joinDate: "2023-02-10"
+            },
+            {
+                id: 3,
+                name: "Blaze",
+                role: "EXP Laner",
+                winRate: 75,
+                rank: "Mythical Glory",
+                avatar: "B",
+                mainHeroes: ["Uranus", "Thamuz", "Khaleed"],
+                joinDate: "2023-01-20"
+            },
+            {
+                id: 4,
+                name: "Frost",
+                role: "Gold Laner",
+                winRate: 80,
+                rank: "Mythical Glory",
+                avatar: "F",
+                mainHeroes: ["Claude", "Brody", "Melissa"],
+                joinDate: "2023-02-05"
+            },
+            {
+                id: 5,
+                name: "Ace",
+                role: "Roamer",
+                winRate: 77,
+                rank: "Mythical Glory",
+                avatar: "A",
+                mainHeroes: ["Mathilda", "Rafaela", "Diggie"],
+                joinDate: "2023-03-01"
+            },
+            {
+                id: 6,
+                name: "Viper",
+                role: "Substitute • Jungler",
+                winRate: 70,
+                rank: "Mythic",
+                avatar: "V",
+                mainHeroes: ["Fanny", "Lancelot", "Karina"],
+                joinDate: "2023-04-15"
+            }
+        ];
+        
+        const matchHistory = [
+            {
+                id: 1,
+                result: "win",
+                mode: "Ranked • Mythic",
+                score: "25 - 12",
+                heroes: ["Ling", "Kagura", "Uranus", "Claude", "Mathilda"],
+                date: "2024-06-10"
+            },
+            {
+                id: 2,
+                result: "win",
+                mode: "Scrim • Tournament",
+                score: "18 - 7",
+                heroes: ["Hayabusa", "Yve", "Khaleed", "Brody", "Rafaela"],
+                date: "2024-06-09"
+            },
+            {
+                id: 3,
+                result: "loss",
+                mode: "Ranked • Mythic",
+                score: "15 - 22",
+                heroes: ["Gusion", "Lylia", "Thamuz", "Melissa", "Diggie"],
+                date: "2024-06-08"
+            },
+            {
+                id: 4,
+                result: "win",
+                mode: "Scrim • Friendly",
+                score: "20 - 15",
+                heroes: ["Ling", "Kagura", "Uranus", "Claude", "Mathilda"],
+                date: "2024-06-07"
+            }
+        ];
+        
+        const trainingSchedule = [
+            {
+                id: 1,
+                title: "Strategy Practice - Draft Phase",
+                time: "Hari ini • 20:00 WIB",
+                description: "Fokus pada draft strategy dan hero pool optimization. Wajib hadir semua anggota main roster.",
+                participants: ["DragonX", "Shadow", "Blaze", "Frost", "Ace"]
+            },
+            {
+                id: 2,
+                title: "Scrim vs Team Alpha",
+                time: "Besok • 21:00 WIB",
+                description: "Best of 3 scrim match. Fokus pada early game rotation dan objective control.",
+                participants: ["DragonX", "Shadow", "Blaze", "Frost", "Ace"]
+            },
+            {
+                id: 3,
+                title: "Individual Skill Training",
+                time: "13 Juni • 19:00 WIB",
+                description: "Masing-masing anggota fokus pada hero pool dan mechanical skill improvement.",
+                participants: ["All Members"]
+            }
+        ];
+        
+        const heroPool = [
+            { id: 1, name: "Ling", role: "Jungler • Assassin", icon: "L" },
+            { id: 2, name: "Gusion", role: "Jungler • Assassin", icon: "G" },
+            { id: 3, name: "Hayabusa", role: "Jungler • Assassin", icon: "H" },
+            { id: 4, name: "Kagura", role: "Mid • Mage", icon: "K" },
+            { id: 5, name: "Yve", role: "Mid • Mage", icon: "Y" },
+            { id: 6, name: "Lylia", role: "Mid • Mage", icon: "L" },
+            { id: 7, name: "Uranus", role: "EXP • Tank", icon: "U" },
+            { id: 8, name: "Thamuz", role: "EXP • Fighter", icon: "T" },
+            { id: 9, name: "Khaleed", role: "EXP • Fighter", icon: "K" },
+            { id: 10, name: "Claude", role: "Gold • Marksman", icon: "C" },
+            { id: 11, name: "Brody", role: "Gold • Marksman", icon: "B" },
+            { id: 12, name: "Melissa", role: "Gold • Marksman", icon: "M" },
+            { id: 13, name: "Mathilda", role: "Roam • Support", icon: "M" },
+            { id: 14, name: "Rafaela", role: "Roam • Support", icon: "R" },
+            { id: 15, name: "Diggie", role: "Roam • Support", icon: "D" }
+        ];
+        
+        const chatMessages = [
+            {
+                id: 1,
+                sender: "DragonX",
+                message: "Squad, jangan lupa scrim nanti jam 21:00 vs Team Alpha. Siapkan draft terbaik!",
+                time: "10:30",
+                avatar: "D"
+            },
+            {
+                id: 2,
+                sender: "Shadow",
+                message: "Siap cap! Aku lagi practice Kagura nih, baru beli skin epic 😎",
+                time: "10:32",
+                avatar: "S"
+            },
+            {
+                id: 3,
+                sender: "Blaze",
+                message: "Aku bawa Uranus atau Thamuz? Mereka punya true damage hero banyak",
+                time: "10:35",
+                avatar: "B"
+            },
+            {
+                id: 4,
+                sender: "Frost",
+                message: "Kalo mereka ban Claude, aku pake Brody aja. Lagi OP nih hero",
+                time: "10:37",
+                avatar: "F"
+            },
+            {
+                id: 5,
+                sender: "Ace",
+                message: "Aku siap pake Mathilda atau Rafaela. Need vision control buat early game",
+                time: "10:40",
+                avatar: "A"
+            }
+        ];
+        
+        // State aplikasi
+        let currentPage = "dashboard";
+        let currentUser = squadMembers[0];
+        
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const mainApp = document.getElementById('mainApp');
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const loginButton = document.getElementById('loginButton');
+        const registerLink = document.getElementById('registerLink');
+        const forgotPassword = document.getElementById('forgotPassword');
+        
+        const notificationButton = document.getElementById('notificationButton');
+        const userProfile = document.getElementById('userProfile');
+        
+        const menuItems = document.querySelectorAll('.menu-item');
+        const pages = {
+            dashboard: document.getElementById('membersPage'),
+            members: document.getElementById('membersPage'),
+            matches: document.getElementById('matchesPage'),
+            schedule: document.getElementById('schedulePage'),
+            heroes: document.getElementById('heroesPage'),
+            chat: document.getElementById('chatPage'),
+            stats: document.getElementById('statsPage')
+        };
+        
+        const inviteMemberButton = document.getElementById('inviteMemberButton');
+        const inviteModal = document.getElementById('inviteModal');
+        const closeInviteModal = document.getElementById('closeInviteModal');
+        const sendInvite = document.getElementById('sendInvite');
+        
+        const startScrimButton = document.getElementById('startScrimButton');
+        const scrimModal = document.getElementById('scrimModal');
+        const closeScrimModal = document.getElementById('closeScrimModal');
+        const startScrim = document.getElementById('startScrim');
+        
+        const chatMessagesContainer = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessage = document.getElementById('sendMessage');
+        
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type = "info") {
+            // Hapus notifikasi sebelumnya
+            const existingNotification = document.querySelector('.notification-toast');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Buat notifikasi baru
+            const notification = document.createElement('div');
+            notification.className = `notification-toast notification-${type}`;
+            
+            // Tambahkan style
+            const style = document.createElement('style');
+            style.textContent = `
+                .notification-toast {
+                    position: fixed;
+                    top: 100px;
+                    right: 30px;
+                    background: var(--mlbb-card);
+                    border: 2px solid var(--mlbb-border);
+                    border-left: 5px solid ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--mlbb-red)'};
+                    color: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                    z-index: 3000;
+                    min-width: 300px;
+                    animation: slideInRight 0.3s ease;
+                    font-size: 16px;
+                }
+                
+                @keyframes slideInRight {
+                    0% { transform: translateX(100%); opacity: 0; }
+                    100% { transform: translateX(0); opacity: 1; }
+                }
+                
+                @keyframes slideOutRight {
+                    0% { transform: translateX(0); opacity: 1; }
+                    100% { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Hapus notifikasi setelah 5 detik
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+        
+        // Fungsi untuk login
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            if (!username || !password) {
+                showNotification("Harap isi ID Game dan password!", "error");
+                return;
+            }
+            
+            // Demo credentials
+            if ((username === 'dragonx' || username === '123456789') && password === 'dxdmlbb') {
+                showNotification("Login berhasil! Selamat datang di DxD Squad!", "success");
+                
+                // Simpan session
+                if (document.getElementById('rememberMe').checked) {
+                    localStorage.setItem('dxd_mlbb_user', JSON.stringify({
+                        username: username,
+                        timestamp: Date.now()
+                    }));
+                }
+                
+                // Pindah ke main app
+                setTimeout(() => {
+                    loginScreen.style.display = 'none';
+                    mainApp.style.display = 'block';
+                    loadChatMessages();
+                }, 1000);
+            } else {
+                showNotification("Login gagal! Coba gunakan: dragonx / dxdmlbb", "error");
+            }
+        }
+        
+        // Fungsi untuk toggle password visibility
+        function togglePasswordVisibility() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        }
+        
+        // Fungsi untuk pindah halaman
+        function switchPage(pageId) {
+            // Update menu active state
+            menuItems.forEach(item => {
+                if (item.dataset.page === pageId) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Sembunyikan semua halaman
+            Object.values(pages).forEach(page => {
+                if (page) page.classList.add('hidden');
+            });
+            
+            // Tampilkan halaman yang dipilih
+            if (pages[pageId]) {
+                pages[pageId].classList.remove('hidden');
+            }
+            
+            // Tampilkan chat container jika halaman chat
+            const chatPage = document.getElementById('chatPage');
+            if (pageId === 'chat') {
+                chatPage.style.display = 'flex';
+            } else {
+                chatPage.style.display = 'none';
+            }
+            
+            currentPage = pageId;
+            
+            // Update konten berdasarkan halaman
+            switch(pageId) {
+                case 'members':
+                    updateMembersGrid();
+                    break;
+                case 'matches':
+                    updateMatchHistory();
+                    break;
+                case 'schedule':
+                    updateSchedule();
+                    break;
+                case 'heroes':
+                    updateHeroPool();
+                    break;
+                case 'stats':
+                    updateStats();
+                    break;
+            }
+        }
+        
+        // Fungsi untuk update members grid
+        function updateMembersGrid() {
+            const membersGrid = document.querySelector('.members-grid');
+            if (!membersGrid) return;
+            
+            membersGrid.innerHTML = '';
+            
+            squadMembers.forEach(member => {
+                const memberCard = document.createElement('div');
+                memberCard.className = 'member-card';
+                memberCard.innerHTML = `
+                    <div class="member-header">
+                        <div class="member-avatar">${member.avatar}</div>
+                        <div class="member-info">
+                            <div class="member-name">${member.name}</div>
+                            <div class="member-role">${member.role}</div>
+                        </div>
+                    </div>
+                    <div class="member-stats">
+                        <div class="member-stat">
+                            <div class="member-stat-value">${member.winRate}%</div>
+                            <div class="member-stat-label">Win Rate</div>
+                        </div>
+                        <div class="member-stat">
+                            <div class="member-stat-value">${member.rank}</div>
+                            <div class="member-stat-label">Rank</div>
+                        </div>
+                    </div>
+                `;
+                
+                membersGrid.appendChild(memberCard);
+            });
+        }
+        
+        // Fungsi untuk update match history
+        function updateMatchHistory() {
+            const matchesList = document.querySelector('.matches-list');
+            if (!matchesList) return;
+            
+            matchesList.innerHTML = '';
+            
+            matchHistory.forEach(match => {
+                const matchCard = document.createElement('div');
+                matchCard.className = `match-card ${match.result}`;
+                matchCard.innerHTML = `
+                    <div class="match-info">
+                        <div class="match-result">
+                            <div class="result-badge">${match.result.toUpperCase()}</div>
+                        </div>
+                        <div class="match-details">
+                            <div class="match-mode">${match.mode}</div>
+                            <div class="match-heroes">${match.heroes.join(', ')}</div>
+                        </div>
+                    </div>
+                    <div class="match-score">${match.score}</div>
+                `;
+                
+                matchesList.appendChild(matchCard);
+            });
+        }
+        
+        // Fungsi untuk update schedule
+        function updateSchedule() {
+            const scheduleList = document.querySelector('.schedule-list');
+            if (!scheduleList) return;
+            
+            scheduleList.innerHTML = '';
+            
+            trainingSchedule.forEach(schedule => {
+                const scheduleCard = document.createElement('div');
+                scheduleCard.className = 'schedule-card';
+                
+                const participantsHTML = schedule.participants
+                    .map(p => `<span class="participant">${p}</span>`)
+                    .join('');
+                
+                scheduleCard.innerHTML = `
+                    <div class="schedule-header">
+                        <div class="schedule-title">${schedule.title}</div>
+                        <div class="schedule-time">${schedule.time}</div>
+                    </div>
+                    <div class="schedule-desc">${schedule.description}</div>
+                    <div class="schedule-participants">
+                        ${participantsHTML}
+                    </div>
+                `;
+                
+                scheduleList.appendChild(scheduleCard);
+            });
+        }
+        
+        // Fungsi untuk update hero pool
+        function updateHeroPool() {
+            const heroPoolContainer = document.querySelector('.hero-pool');
+            if (!heroPoolContainer) return;
+            
+            heroPoolContainer.innerHTML = '';
+            
+            heroPool.forEach(hero => {
+                const heroCard = document.createElement('div');
+                heroCard.className = 'hero-card';
+                heroCard.innerHTML = `
+                    <div class="hero-icon">${hero.icon}</div>
+                    <div class="hero-name">${hero.name}</div>
+                    <div class="hero-role">${hero.role}</div>
+                `;
+                
+                heroPoolContainer.appendChild(heroCard);
+            });
+        }
+        
+        // Fungsi untuk update stats
+        function updateStats() {
+            // Stats sudah di-hardcode di HTML
+            // Bisa ditambahkan update dynamic di sini
+        }
+        
+        // Fungsi untuk load chat messages
+        function loadChatMessages() {
+            if (!chatMessagesContainer) return;
+            
+            chatMessagesContainer.innerHTML = '';
+            
+            chatMessages.forEach(msg => {
+                const message = document.createElement('div');
+                message.className = 'message';
+                message.innerHTML = `
+                    <div class="message-avatar">${msg.avatar}</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <div class="message-sender">${msg.sender}</div>
+                            <div class="message-time">${msg.time}</div>
+                        </div>
+                        <div class="message-text">${msg.message}</div>
+                    </div>
+                `;
+                
+                chatMessagesContainer.appendChild(message);
+            });
+            
+            // Scroll ke bawah
+            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+        }
+        
+        // Fungsi untuk send chat message
+        function sendChatMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Tambahkan pesan baru
+            const newMessage = {
+                id: chatMessages.length + 1,
+                sender: currentUser.name,
+                message: message,
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                avatar: currentUser.avatar
+            };
+            
+            chatMessages.push(newMessage);
+            
+            // Reset input
+            messageInput.value = '';
+            
+            // Reload messages
+            loadChatMessages();
+            
+            // Simulasi reply dari anggota lain
+            setTimeout(() => {
+                const randomMember = squadMembers[Math.floor(Math.random() * (squadMembers.length - 1)) + 1];
+                const replies = [
+                    "Setuju!",
+                    "Nice idea!",
+                    "Ayo kita coba!",
+                    "Siap!",
+                    "Lets go!",
+                    "Mantap!",
+                    "Good plan!"
+                ];
+                
+                const randomReply = replies[Math.floor(Math.random() * replies.length)];
+                
+                const replyMessage = {
+                    id: chatMessages.length + 1,
+                    sender: randomMember.name,
+                    message: randomReply,
+                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    avatar: randomMember.avatar
+                };
+                
+                chatMessages.push(replyMessage);
+                loadChatMessages();
+                
+                showNotification(`${randomMember.name} membalas pesan`, "info");
+            }, 1000);
+            
+            showNotification("Pesan terkirim!", "success");
+        }
+        
+        // Fungsi untuk invite member
+        function inviteMember() {
+            const inviteId = document.getElementById('inviteId').value.trim();
+            const inviteRole = document.getElementById('inviteRole').value;
+            
+            if (!inviteId) {
+                showNotification("Harap masukkan ID Game!", "error");
+                return;
+            }
+            
+            showNotification(`Undangan dikirim ke ID: ${inviteId} sebagai ${inviteRole}`, "success");
+            inviteModal.style.display = 'none';
+            
+            // Reset form
+            document.getElementById('inviteId').value = '';
+            document.getElementById('inviteRole').value = 'jungler';
+        }
+        
+        // Fungsi untuk start scrim
+        function startScrimMatch() {
+            const scrimType = document.getElementById('scrimType').value;
+            const opponentTeam = document.getElementById('opponentTeam').value.trim();
+            const scrimTime = document.getElementById('scrimTime').value;
+            
+            if (!opponentTeam || !scrimTime) {
+                showNotification("Harap isi semua field!", "error");
+                return;
+            }
+            
+            showNotification(`Scrim ${scrimType} vs ${opponentTeam} dijadwalkan!`, "success");
+            scrimModal.style.display = 'none';
+            
+            // Reset form
+            document.getElementById('scrimType').value = 'bo3';
+            document.getElementById('opponentTeam').value = '';
+            document.getElementById('scrimTime').value = '';
+        }
+        
+        // Event Listeners
+        loginForm.addEventListener('submit', handleLogin);
+        
+        togglePassword.addEventListener('click', togglePasswordVisibility);
+        
+        registerLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showNotification("Hubungi Captain untuk bergabung dengan squad!", "info");
+            usernameInput.value = 'dragonx';
+            passwordInput.value = 'dxdmlbb';
+        });
+        
+        forgotPassword.addEventListener('click', function(e) {
+            e.preventDefault();
+            showNotification("Hubungi Captain untuk reset password", "info");
+        });
+        
+        // Menu items
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                switchPage(this.dataset.page);
+            });
+        });
+        
+        // Invite member modal
+        inviteMemberButton.addEventListener('click', function() {
+            inviteModal.style.display = 'flex';
+        });
+        
+        closeInviteModal.addEventListener('click', function() {
+            inviteModal.style.display = 'none';
+        });
+        
+        sendInvite.addEventListener('click', inviteMember);
+        
+        // Scrim modal
+        startScrimButton.addEventListener('click', function() {
+            scrimModal.style.display = 'flex';
+        });
+        
+        closeScrimModal.addEventListener('click', function() {
+            scrimModal.style.display = 'none';
+        });
+        
+        startScrim.addEventListener('click', startScrimMatch);
+        
+        // Chat
+        sendMessage.addEventListener('click', sendChatMessage);
+        
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === inviteModal) {
+                inviteModal.style.display = 'none';
+            }
+            if (e.target === scrimModal) {
+                scrimModal.style.display = 'none';
+            }
+        });
+        
+        // Check for saved session
+        function checkSavedSession() {
+            const savedUser = localStorage.getItem('dxd_mlbb_user');
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+                const oneDay = 24 * 60 * 60 * 1000;
+                
+                if (Date.now() - userData.timestamp < oneDay) {
+                    usernameInput.value = userData.username;
+                    passwordInput.value = 'dxdmlbb';
+                    document.getElementById('rememberMe').checked = true;
+                }
+            }
+        }
+        
+        // Initialize
+        function init() {
+            checkSavedSession();
+            updateMembersGrid();
+            updateMatchHistory();
+            updateSchedule();
+            updateHeroPool();
+            loadChatMessages();
+            
+            // Demo: Auto-login after 2 seconds for testing
+            setTimeout(() => {
+                // Uncomment untuk auto-login
+                // usernameInput.value = 'dragonx';
+                // passwordInput.value = 'dxdmlbb';
+                // loginButton.click();
+            }, 2000);
+        }
+        
+        // Run initialization
+        window.addEventListener('DOMContentLoaded', init);
+        
+        // Create battle animation
+        function createBattleAnimation() {
+            const container = document.createElement('div');
+            container.className = 'battle-animation';
+            
+            for (let i = 0; i < 10; i++) {
+                const effect = document.createElement('div');
+                effect.className = 'skill-effect';
+                effect.style.left = `${Math.random() * 100}%`;
+                effect.style.top = `${Math.random() * 100}%`;
+                effect.style.animationDelay = `${Math.random() * 2}s`;
+                effect.style.background = `radial-gradient(circle, ${Math.random() > 0.5 ? 'var(--mlbb-red)' : 'var(--mlbb-cyan)'} 0%, transparent 70%)`;
+                container.appendChild(effect);
+            }
+            
+            document.body.appendChild(container);
+        }
+        
+        // Start battle animation
+        createBattleAnimation();
+    </script>
+</body>
+</html>
